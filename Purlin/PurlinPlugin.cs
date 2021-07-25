@@ -102,6 +102,13 @@ namespace Purlin_Array
                 textBox10.Enabled = true;
                 textBox11.Enabled = true;
             }
+            else
+            {
+                textBox9.Enabled = false;
+                textBox10.Enabled = false;
+                textBox11.Enabled = false;
+
+            }
         }
     }
 }

@@ -1,0 +1,10 @@
+D:\tekla\my plugin\Purlin\purlin_plugin_insert\bin\Debug\purlin_plugin_insert.exe.config
+D:\tekla\my plugin\Purlin\purlin_plugin_insert\bin\Debug\purlin_plugin_insert.exe
+D:\tekla\my plugin\Purlin\purlin_plugin_insert\bin\Debug\purlin_plugin_insert.pdb
+D:\tekla\my plugin\Purlin\ObjDir\2017i\purlin_plugin_insert\purlin_plugin_insert.csprojAssemblyReference.cache
+D:\tekla\my plugin\Purlin\ObjDir\2017i\purlin_plugin_insert\purlin_plugin_insert.Form1.resources
+D:\tekla\my plugin\Purlin\ObjDir\2017i\purlin_plugin_insert\purlin_plugin_insert.Properties.Resources.resources
+D:\tekla\my plugin\Purlin\ObjDir\2017i\purlin_plugin_insert\purlin_plugin_insert.csproj.GenerateResource.cache
+D:\tekla\my plugin\Purlin\ObjDir\2017i\purlin_plugin_insert\purlin_plugin_insert.csproj.CoreCompileInputs.cache
+D:\tekla\my plugin\Purlin\ObjDir\2017i\purlin_plugin_insert\purlin_plugin_insert.exe
+D:\tekla\my plugin\Purlin\ObjDir\2017i\purlin_plugin_insert\purlin_plugin_insert.pdb

@@ -27,23 +27,27 @@ namespace purlin_plugin_insert
             Picker input = new Picker();
             ArrayList points = input.PickPoints(Picker.PickPointEnum.PICK_POLYGON, "Picker Frame Points");
             //ModelObjectEnumerator grids = input.PickObjects(Picker.PickObjectsEnum.PICK_N_OBJECTS);
-
-            ArrayList line1 = input.PickLine();
-            ArrayList line2 = input.PickLine();
-            Vector vec1 = new Vector((line1[0] as Point) -( line1[1] as Point)); 
-            Vector vec2 = new Vector((line2[0] as Point) - (line2[1] as Point));
-
-            Vector vecZ = new Vector(0, 0, 1);
-            GeometricPlane g1 = new GeometricPlane((line1[0] as Point), vecZ, vec1);
-            GeometricPlane g2 = new GeometricPlane((line2[0] as Point), vecZ, vec2);
-
+            int no_grids = int.Parse(tx_lines.Text);
             List<GeometricPlane> plans = new List<GeometricPlane>();
-            plans.Add(g1);
-            plans.Add(g2);
+            List<Point> midPoints = new List<Point>();
+            List<Vector> vectors = new List<Vector>();
 
-            double dis = Distance.PointToPoint((line1[0] as Point), (line2[0] as Point));
+            while (no_grids>0)
+            {
+                ArrayList line = input.PickLine();
+                Vector vec= new Vector((line[0] as Point) - (line[1] as Point));
+                Point mid_point = getmidpoint((line[0] as Point) , (line[1] as Point));
+                Vector vecz= new Vector(0, 0, 1);
+                GeometricPlane plane = new GeometricPlane((line[0] as Point), vecz, vec);
+                plans.Add(plane);
+                midPoints.Add(mid_point);
+                vectors.Add(vec);
 
+                no_grids -= 1;
 
+            }
+
+            plans.Remove(plans[plans.Count - 1]);
             for (int i = 0; i < plans.Count; i++)
             {
                 GeometricPlane currentPlan = plans[i];
@@ -60,19 +64,51 @@ namespace purlin_plugin_insert
                         conPoints.Add(p2);
                         Component con = new Component();
                         con.Name = "Purlin_Array";
+                        con.Number = -100000;
                         ComponentInput componentInput = new ComponentInput();
                         Polygon polygon = new Polygon();
                         polygon.Points = conPoints;
-                        componentInput. AddTwoInputPositions(p1,p2);
-                        componentInput. AddInputPolygon(polygon);
-                        
+                        //componentInput.AddTwoInputPositions(p1, p2);
+                        //componentInput.AddInputPolygon(polygon);
+                        componentInput.AddOneInputPosition(p1);
+                        componentInput.AddOneInputPosition(p2);
                         con.SetComponentInput(componentInput);
                         con.LoadAttributesFromFile("standard");
+
+                        t3d.Point mid1 = midPoints[i];
+                        t3d.Point mid2 = midPoints[i+1];
+                        double dis = Distance.PointToPoint(mid1, mid2);
+                        con.SetAttribute("purlinLength", dis);
+                        Vector vector = new Vector(mid2- mid1);
+                     vector.Normalize();
+                        double X= vector.X;
+                        double Y = vector.Y;
+                        double direction;
+                        if ((int)X != 0)
+                        {
+                            direction = X;
+                            con.SetAttribute("axis", 1);
+
+                            
+                        }
+                        else
+                        {
+                            direction = Y;
+                            con.SetAttribute("axis", 0);
+
+                        }
+                        if (direction>0)
+                        {
+                            con.SetAttribute("cb_singleDoule", 0);
+
+                        }
+                        else
+                        {
+                            con.SetAttribute("cb_singleDoule", 1);
+                        }
+
                         con.Insert();
-                        CustomPart  d = new CustomPart();
-                        d.SetInputPositions(p1, p2);
-                        d.Name = "Purlin_Array";
-                        d.Insert();
+
                     }
                 }
 
@@ -81,11 +117,14 @@ namespace purlin_plugin_insert
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+       
+        public static t3d.Point getmidpoint(t3d.Point p1, t3d.Point p2)
         {
-            Picker input = new Picker(); 
-            object points = input.PickObject(Picker.PickObjectEnum.PICK_ONE_OBJECT);
-
+            double dis = t3d.Distance.PointToPoint(p1, p2);
+            t3d.Vector vec = new t3d.Vector(p2 - p1);
+            vec.Normalize();
+            return p1 + 0.5 * dis * vec;
         }
+
     }
 }

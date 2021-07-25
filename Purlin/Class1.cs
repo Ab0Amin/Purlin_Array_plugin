@@ -92,19 +92,11 @@ namespace Purlin_Array
         public override List<PluginBase.InputDefinition> DefineInput()
         {
             List<PluginBase.InputDefinition> inputDefinitionList = new List<PluginBase.InputDefinition>();
-            //Picker picker = new Picker();
-            //Part mainPart = picker.PickObject(Picker.PickObjectEnum.PICK_ONE_PART, "Pick Main Part") as Part;
-            //Part secendaryPart = picker.PickObject(Picker.PickObjectEnum.PICK_ONE_PART, "Pick Secandry Part") as Part;
-            Picker input = new Picker();
+              Picker input = new Picker();
 
             t3d.Point point11 = input.PickPoint("Pick first Point");
             t3d.Point point22 = input.PickPoint("Pick secand Point");
-            //Picker inputs = new Picker();
-            //ModelObjectEnumerator rafter_1 = inputs.PickObjects(Picker.PickObjectsEnum.PICK_N_PARTS, "Pick webs of first Rafter");
-            //ModelObjectEnumerator rafter_2 = inputs.PickObjects(Picker.PickObjectsEnum.PICK_N_PARTS, "Pick webs of second Rafter");
-
-            //ArrayList polygonPoints = inputs.PickPoints(Picker.PickPointEnum.PICK_POLYGON);
-
+         
 
 
             PluginBase.InputDefinition inputDefinition1 = new PluginBase.InputDefinition(point11);
@@ -164,8 +156,10 @@ namespace Purlin_Array
 
                 #endregion
 
-                //this.createconnection((Part)this.myModel.SelectModelObject((Identifier)Input[0].GetInput()), (Part)this.myModel.SelectModelObject((Identifier)Input[1].GetInput()));
-                this.createconnection((t3d.Point)Input[0].GetInput(), (t3d.Point)Input[1].GetInput());
+                ArrayList points = new ArrayList();
+                points.Add((t3d.Point)Input[0].GetInput());
+                points.Add((t3d.Point)Input[1].GetInput());
+                this.createconnection(points);
             }
             catch (Exception e)
             {
@@ -175,9 +169,10 @@ namespace Purlin_Array
             return true;
         }
 
-        public void createconnection(t3d.Point point1, t3d.Point point2)
+        public void createconnection(ArrayList points)
         {
-
+            t3d.Point point1 = points[0] as t3d.Point;
+            t3d.Point point2 = points[1] as t3d.Point;
             Position.RotationEnum rotation;
             Position.DepthEnum leftOrright;
             Position.PlaneEnum planPos;
